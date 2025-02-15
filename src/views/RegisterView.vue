@@ -72,15 +72,15 @@ import Loading from '../components/Loading.vue';
 const isLoad = ref(false)
 
 const User = ref({
-  username: "bunnasorn",
-  pilotName: "Killer",
+  username: "",
+  pilotName: "",
   pilotImage: "",
-  pilotMelee: "1",
-  pilotShoot: "1",
-  pilotReaction: "1",
-  pilotPsychic: "1",
-  pilotBG: [{ "name": "Killer", "cost": "1" }, { "name": "ป้อปปูล่าร์", "cost": "2" }],
-  status: "inreview"
+  pilotMelee: "",
+  pilotShoot: "",
+  pilotReaction: "",
+  pilotPsychic: "",
+  pilotBG: [],
+  status: ""
 })
 
 const result = ref("")
