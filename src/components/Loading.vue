@@ -11,8 +11,11 @@
 
 <style scoped>
 .loading {
-  width: 100%;
-  height: 100vw;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,6 +25,6 @@
   width: 100%;
   max-width: 200px;
   margin-top: -10%;
-  filter: hue-rotate(200deg);
+  filter: hue-rotate(270deg) invert(1);
 }
 </style>
