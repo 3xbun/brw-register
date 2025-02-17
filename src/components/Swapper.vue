@@ -39,7 +39,7 @@ const props = defineProps({
   align-items: center;
   font-size: 2em;
   border-radius: 50%;
-  color: #d66d77;
+  color: #B88E00;
 }
 
 .active {
