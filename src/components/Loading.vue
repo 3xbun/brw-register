@@ -12,11 +12,16 @@
 <style scoped>
 .loading {
   width: 100%;
+  height: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .loading>img {
   width: 100%;
-  margin-top: -30%;
+  max-width: 200px;
+  margin-top: -10%;
   filter: hue-rotate(200deg);
 }
 </style>
