@@ -30,6 +30,9 @@ a {
 }
 
 input,
-button {
+button,
+select {
   font-family: inherit;
+  background-color: var(--secondary-base-bg);
+  color: var(--primary-base-text);
 }

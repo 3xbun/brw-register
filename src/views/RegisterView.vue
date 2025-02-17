@@ -48,9 +48,49 @@
         <input type="text" placeholder="0" v-model="pilotBG.cost" @keypress.enter="addBG()">
       </div>
       <p class="btn" @click="addBG()">เพิ่ม</p>
+
+      <h2>หุ่น</h2>
+      <input type="text" placeholder="ชื่อหุ่น" v-model="User.mechName">
+      <input type="text" placeholder="ลิงก์รูปภาพพลขับ" v-model="User.mechImage">
+      <div class="pilotImage">
+        <img v-if="User.mechImage" :src="User.mechImage">
+        <img v-else src="https://banffventureforum.com/wp-content/uploads/2019/08/no-photo-icon-22.png">
+      </div>
+      <div class="option">
+        <p>BODY: </p>
+        <select v-model="User.mechBody">
+          <option v-for="item in Body" :value="item.ID">{{ item.name }} [{{ item.cost }}]</option>
+        </select>
+      </div>
+
+      <h2>ยุทโธปกรณ์</h2>
+      <div class="item" v-for="item in User.mechWE.split(',').slice(0, -1)">
+        <p class="title">
+          <i class="fa-duotone fa-solid fa-xmark" @click="removeItem(item)"></i>
+          {{ getItem(item).name }} [{{ getItem(item).cost }}] -
+          <span class="icons">
+            [{{ getItem(item).category }}]
+          </span>
+        </p>
+        <div class="desc">
+          <ul>
+            <li v-for="i in getItem(item).DETAIL.split(',')"> -
+              {{ i }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <input type="text" placeholder="ค้นหายุทโธปกรณ์" v-model="searchText">
+      <ul class="equipment">
+        <li v-for="item in Equipment">
+          {{ item.name }} [{{ item.cost }}]
+          <i class="fa-solid fa-plus" @click="User.mechWE += `${item.ID},`"></i>
+        </li>
+      </ul>
+
       <div class="regisBtn">
         <Loading class="loading" v-if="isLoad" />
-        <button @click="register()">ลงทะเบียน</button>
+        <button class="active" @click="register()">ลงทะเบียน</button>
       </div>
     </form>
 
@@ -64,12 +104,21 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import axios from 'axios';
 
 import Loading from '../components/Loading.vue';
 
 const isLoad = ref(false)
+
+const WnE = ref([])
+
+const searchText = ref('')
+const Body = computed(() => WnE.value.filter(item => item.type == 'Augmented Parts [Body]'))
+const Equipment = computed(() => WnE.value.filter(item => item.type != 'Augmented Parts [Body]').filter(item => item.name.startsWith(searchText.value)).slice(0, 5))
+
+const getItem = (id) => WnE.value.filter(item => item.ID == id)[0]
+const removeItem = (id) => { User.value.mechWE = User.value.mechWE.replace(id + ',', ''); }
 
 const User = ref({
   username: "",
@@ -80,6 +129,11 @@ const User = ref({
   pilotReaction: "",
   pilotPsychic: "",
   pilotBG: [],
+  mechName: "",
+  mechImage: "",
+  mechBody: "",
+  mechProp: "",
+  mechWE: "",
   status: ""
 })
 
@@ -113,6 +167,12 @@ const register = () => {
   payload.pilotBG = JSON.stringify(payload.pilotBG)
   axios.post("https://n8n.3xbun.com/webhook/brw-api/register", payload).then(res => { result.value = res.status; isLoad.value = false }).catch(err => { result.value = err; isLoad.value = false })
 }
+
+onMounted(() => {
+  axios.get("https://n8n.3xbun.com/webhook/brw-api/wne").then(res => {
+    WnE.value = res.data
+  })
+})
 </script>
 
 <style scoped>
@@ -145,7 +205,8 @@ form {
   margin: auto;
 }
 
-input {
+input,
+select {
   font-size: inherit;
   padding: .5em;
   border: 1px solid #a1a1a1;
@@ -168,7 +229,7 @@ button {
 }
 
 .active {
-  background-color: rgb(0, 200, 83);
+  background-color: var(--primary-base-bg);
   color: var(--primary-base-text);
 }
 
@@ -237,10 +298,15 @@ i {
   margin: auto;
 }
 
+ul {
+  margin-left: 1.5em;
+}
+
 li {
   display: flex;
   align-items: center;
   gap: .5em;
+  list-style: inside;
 }
 
 i {
@@ -269,5 +335,43 @@ i {
 
 .loading {
   width: 20%;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+}
+
+.option p {
+  width: 20%;
+  color: var(--primary-base-bg);
+  font-weight: bold;
+}
+
+.option select {
+  width: 100%;
+}
+
+.equipment i {
+  color: var(--primary-base-bg)
+}
+
+.item {
+  margin-top: 1em;
+  margin-left: 1em;
+  border: 1px solid var(--primary-base-bg);
+  padding: 1em;
+  border-radius: .5em;
+}
+
+.title {
+  color: var(--primary-base-bg);
+  font-weight: bold;
+}
+
+.icons {
+  color: var(--secondary-base-bg);
+  display: inline-flex;
+  gap: .2em;
 }
 </style>
