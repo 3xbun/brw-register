@@ -7,9 +7,9 @@
 }
 
 :root {
-  --background: #f4f4f4;
-  --primary-base-bg: #991e2a;
-  --primary-base-text: #fff;
+  --background: #121212;
+  --primary-base-bg: #C9A400;
+  --primary-base-text: #E0E0E0;
   --secondary-base-bg: #424242;
   --light-base-bg: #dbdbdb;
 }
@@ -17,6 +17,7 @@
 body {
   background-color: var(--background);
   font-family: "Noto Sans Thai", serif;
+  color: var(--primary-base-text);
 }
 
 li {
