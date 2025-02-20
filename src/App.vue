@@ -24,7 +24,7 @@ onMounted(() => {
   }
 
   if (localStorage.getItem("Equipments")) {
-    Users.value = JSON.parse(localStorage.getItem("Equipments"))
+    Equipments.value = JSON.parse(localStorage.getItem("Equipments"))
   }
 
   axios.get("https://n8n.3xbun.com/webhook/brw-api/users").then(res => {
