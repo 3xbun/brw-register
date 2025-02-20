@@ -1,7 +1,6 @@
 <template>
   <div>
-    <Loading v-if="Users.length < 1" />
-    <div v-else>
+    <div>
       <h1>PILOT ROSTER</h1>
       <div class="users">
         <RouterLink v-for="user in Users" :to="'users/' + user.username">
@@ -22,22 +21,15 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import { onMounted, ref } from 'vue';
-import Loading from '../components/Loading.vue';
+import { inject } from 'vue';
 
-const Users = ref([])
+const Users = inject('Users')
 
 const status = {
   "approved": "Approved",
   "disapproved": "Disapproved",
   "inreview": "In Review"
 }
-
-onMounted(() => {
-  axios.get("https://n8n.3xbun.com/webhook/brw-api/users").then(res => Users.value = res.data
-  )
-})
 </script>
 
 <style scoped>

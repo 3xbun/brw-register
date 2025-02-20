@@ -1,7 +1,6 @@
 <template>
-  <Loading v-if="!User.username" />
-  <div class="content" v-else>
-    <div id="header">
+  <div class="content">
+    <div id=" header">
       <div class="profileImg">
         <img :src="User.pilotImage" alt="">
       </div>
@@ -12,7 +11,7 @@
     </div>
 
     <section>
-      <h3>นักบิน <span>[5]</span></h3>
+      <h3>นักบิน <span>[{{ pilotCost }}]</span></h3>
       <table>
         <tbody>
           <tr>
@@ -36,11 +35,9 @@
     </section>
 
     <section>
-      <h3>นิยามตัวละคร <span>[5]</span></h3>
+      <h3>นิยามตัวละคร <span>[{{ pilotBGCost }}]</span></h3>
       <ul>
-        <li>Shooter [2]</li>
-        <li>พลังมิตรภาพ [2]</li>
-        <li>ตะโกน [1]</li>
+        <li v-for="bg in JSON.parse(User.pilotBG)">{{ bg.name }} [{{ bg.cost }}]</li>
       </ul>
     </section>
 
@@ -51,24 +48,33 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import { onBeforeMount, ref } from 'vue';
+import { computed, inject } from 'vue';
 import { useRoute } from 'vue-router'
 
 import Swapper from '../components/Swapper.vue';
-import Loading from '../components/Loading.vue';
 
 const route = useRoute()
-const User = ref({})
+const Users = inject('Users')
+const User = computed(() => Users.value.filter(user => user.username == route.params.username)[0])
 
-onBeforeMount(() => {
-  axios.get("https://n8n.3xbun.com/webhook/50d8213b-f36f-443a-92c9-2f0d0246effa/brw-api/user/" + route.params.username).then(res => {
-    User.value = res.data[0]
-  })
+const pilotCost = computed(() => {
+  const u = User.value
+
+  return u.pilotMelee + u.pilotShoot + u.pilotReaction + u.pilotPsychic
+})
+
+const pilotBGCost = computed(() => {
+  const bg = JSON.parse(User.value.pilotBG)
+  let total = 0
+  bg.forEach(b => {
+    total += Number(b.cost)
+  });
+
+  return total
 })
 </script>
 
-<style scoped>
+<style style scoped>
 #header {
   background-color: var(--primary-base-bg);
   color: var(--primary-base-text);
