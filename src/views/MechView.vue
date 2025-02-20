@@ -1,6 +1,5 @@
 <template>
-  <Loading v-if="!User.username" />
-  <div class="content" v-else>
+  <div class="content">
     <div id="header">
       <div class="profileImg">
         <img :src="User.mechImage" alt="">
@@ -15,61 +14,39 @@
 
     <section id="cost">
       <p>COST</p>
-      <h1>12</h1>
+      <h1>{{ mechCost }}</h1>
     </section>
 
     <section id="name">
       <h2>Body [2]</h2>
       <div class="item">
-        <p class="title">Amphibious Booster [2]</p>
+        <p class="title">{{ EquipmentsSearch(User.mechBody).name }} [{{ EquipmentsSearch(User.mechBody).cost }}]</p>
         <div class="desc">
           <ul>
-            <li>
-              [Propulsion]
-            </li>
-            <li>
-              เมื่ออยู่พื้นที่น้ำ [Propulsion] +2 <i class="fa-duotone fa-solid fa-dice-six"></i>
+            <li v-for="detail in EquipmentsSearch(User.mechBody).DETAIL.split(',')">
+              {{ detail }}
             </li>
           </ul>
         </div>
       </div>
     </section>
     <section id="name">
-      <h2>Propulsion [3]</h2>
+      <h2>Propulsion [{{ User.mechProp }}]</h2>
     </section>
     <section id="name">
       <h2>Weapons & Equipments</h2>
-      <div class="item">
+      <div class="item" v-for="item in User.mechWE.split(',')">
         <p class="title">
-          Heat Hawk [2] -
+
+          {{ EquipmentsSearch(item).name }} [{{ EquipmentsSearch(item).cost }}] -
           <span class="icons">
-            <i class="fa-duotone fa-solid fa-axe-battle"></i>
-            <i class="fa-duotone fa-solid fa-burst"></i>
-            <i class="fa-duotone fa-solid fa-fire"></i>
+            {{ EquipmentsSearch(item).category }}
           </span>
         </p>
         <div class="desc">
           <ul>
-            <li>
-              DMG 1 <i class="fa-duotone fa-solid fa-dice-six"></i>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="item">
-        <p class="title">120mm Machine Gun [2] -
-          <span class="icons">
-            <i class="fa-duotone fa-solid fa-crosshairs"></i>
-            <i class="fa-duotone fa-solid fa-burst"></i>
-          </span>
-        </p>
-        <div class="desc">
-          <ul>
-            <li>
-              DMG 1 <i class="fa-duotone fa-solid fa-dice-six"></i>
-            </li>
-            <li>
-              สามารถเลือกโจมตีได้ 2 ครั้งในหนึ่งเทิร์น หลังจากนั่นต้องรีโหลด
+            <li v-for="detail in EquipmentsSearch(item).DETAIL.split(',')">
+              {{ detail }}
             </li>
           </ul>
         </div>
@@ -79,20 +56,25 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import { onBeforeMount, ref } from 'vue';
+import { computed, inject } from 'vue';
 import { useRoute } from 'vue-router'
 
 import Swapper from '../components/Swapper.vue';
-import Loading from '../components/Loading.vue';
 
 const route = useRoute()
-const User = ref({})
+const Users = inject('Users')
+const User = computed(() => Users.value.filter(user => user.username == route.params.username)[0])
 
-onBeforeMount(() => {
-  axios.get("https://n8n.3xbun.com/webhook/50d8213b-f36f-443a-92c9-2f0d0246effa/brw-api/user/" + route.params.username).then(res => {
-    User.value = res.data[0]
-  })
+const Equipments = inject('Equipments')
+
+const EquipmentsSearch = (id) => {
+  return Equipments.value.filter(e => e.ID == id)[0]
+}
+
+const mechCost = computed(() => {
+  let cost = 0
+
+  return cost
 })
 </script>
 
