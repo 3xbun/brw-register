@@ -18,7 +18,7 @@
     </section>
 
     <section id="name">
-      <h2>Body [2]</h2>
+      <h2>Body [{{ EquipmentsSearch(User.mechBody).cost }}]</h2>
       <div class="item">
         <p class="title">{{ EquipmentsSearch(User.mechBody).name }} [{{ EquipmentsSearch(User.mechBody).cost }}]</p>
         <div class="desc">
@@ -37,7 +37,6 @@
       <h2>Weapons & Equipments</h2>
       <div class="item" v-for="item in User.mechWE.split(',')">
         <p class="title">
-
           {{ EquipmentsSearch(item).name }} [{{ EquipmentsSearch(item).cost }}] -
           <span class="icons">
             {{ EquipmentsSearch(item).category }}
@@ -45,7 +44,8 @@
         </p>
         <div class="desc">
           <ul>
-            <li v-for="detail in EquipmentsSearch(item).DETAIL.split(',')">
+            <li v-for="detail in EquipmentsSearch(item).DETAIL.split(',')"
+              v-if="EquipmentsSearch(item).DETAIL.split(',')[0] != ''">
               {{ detail }}
             </li>
           </ul>
@@ -73,6 +73,12 @@ const EquipmentsSearch = (id) => {
 
 const mechCost = computed(() => {
   let cost = 0
+
+  cost += Number(EquipmentsSearch(User.value.mechBody).cost) + Number(User.value.mechProp)
+
+  User.value.mechWE.split(',').forEach(item => {
+    cost += Number(EquipmentsSearch(item).cost)
+  });
 
   return cost
 })
