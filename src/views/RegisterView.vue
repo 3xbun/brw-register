@@ -51,7 +51,7 @@
 
       <h2>หุ่น</h2>
       <input type="text" placeholder="ชื่อหุ่น" v-model="User.mechName">
-      <input type="text" placeholder="ลิงก์รูปภาพพลขับ" v-model="User.mechImage">
+      <input type="text" placeholder="ลิงก์รูปภาพหุ่นยนต์" v-model="User.mechImage">
       <div class="pilotImage">
         <img v-if="User.mechImage" :src="User.mechImage">
         <img v-else src="https://banffventureforum.com/wp-content/uploads/2019/08/no-photo-icon-22.png">
