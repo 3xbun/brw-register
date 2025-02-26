@@ -76,7 +76,7 @@ const mechCost = computed(() => {
 
   cost += Number(EquipmentsSearch(User.value.mechBody).cost) + Number(User.value.mechProp)
 
-  User.value.mechWE.split(',').splice(-1).slice(0, -1).forEach(item => {
+  User.value.mechWE.split(',').slice(0, -1).forEach(item => {
     cost += Number(EquipmentsSearch(item).cost)
   });
 
