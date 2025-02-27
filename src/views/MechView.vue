@@ -18,23 +18,36 @@
     </section>
 
     <section id="name">
-      <h2>Body [{{ EquipmentsSearch(User.mechBody).cost }}]</h2>
+      <h2>ตัวหุ่น</h2>
+      <p>{{ User.mechBodyDesc }} [{{ User.mechBodyCost }}]</p>
+
+      <h2>ระบบขับเคลื่อน</h2>
+      <p>{{ User.mechPropDesc }} [{{ User.mechPropCost }}]</p>
+
+      <h2>อุปกรณ์ส่วนเสริม</h2>
       <div class="item">
-        <p class="title">{{ EquipmentsSearch(User.mechBody).name }} [{{ EquipmentsSearch(User.mechBody).cost }}]</p>
+        <p class="title"></p>
         <div class="desc">
-          <ul>
-            <li v-for="detail in EquipmentsSearch(User.mechBody).DETAIL.split(',')">
-              {{ detail }}
-            </li>
-          </ul>
+          <div v-for="item in User.mechAug.split(',').slice(0, -1)">
+            <p class=" title">
+              {{ EquipmentsSearch(item).name }} [{{ EquipmentsSearch(item).cost }}] -
+              <span class="icons">
+                {{ EquipmentsSearch(item).category }}
+              </span>
+            </p>
+            <div class="desc">
+              <ul>
+                <li v-for="detail in EquipmentsSearch(item).DETAIL.split(',')"
+                  v-if="EquipmentsSearch(item).DETAIL.split(',')[0] != ''">
+                  {{ detail }}
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
-    <section id="name">
-      <h2>Propulsion [{{ User.mechProp }}]</h2>
-    </section>
-    <section id="name">
-      <h2>Weapons & Equipments</h2>
+
+      <h2>ยุทโธปกรณ์</h2>
       <div class="item" v-for="item in User.mechWE.split(',').slice(0, -1)">
         <p class=" title">
           {{ EquipmentsSearch(item).name }} [{{ EquipmentsSearch(item).cost }}] -
@@ -74,7 +87,7 @@ const EquipmentsSearch = (id) => {
 const mechCost = computed(() => {
   let cost = 0
 
-  cost += Number(EquipmentsSearch(User.value.mechBody).cost) + Number(User.value.mechProp)
+  cost += Number(User.value.mechBodyCost) + Number(User.value.mechPropCost)
 
   User.value.mechWE.split(',').slice(0, -1).forEach(item => {
     cost += Number(EquipmentsSearch(item).cost)
@@ -216,5 +229,10 @@ li {
   color: var(--secondary-base-bg);
   display: inline-flex;
   gap: .2em;
+}
+
+#name>p {
+  margin-left: 1em;
+  margin-top: 1em;
 }
 </style>
