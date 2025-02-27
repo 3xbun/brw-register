@@ -56,12 +56,43 @@
         <img v-if="User.mechImage" :src="User.mechImage">
         <img v-else src="https://banffventureforum.com/wp-content/uploads/2019/08/no-photo-icon-22.png">
       </div>
-      <div class="option">
-        <p>BODY: </p>
-        <select v-model="User.mechBody">
-          <option v-for="item in Body" :value="item.ID">{{ item.name }} [{{ item.cost }}]</option>
-        </select>
+
+      <h2>ตัวหุ่น</h2>
+      <div class="pilotBG">
+        <input type="text" placeholder="คำอธิบายตัวหุ่น" v-model="User.mechBodyDesc">
+        <input type="text" placeholder="0" v-model="User.mechBodyCost" @keypress.enter="addBG()">
       </div>
+
+      <h2>ระบบขับเคลื่อน</h2>
+      <div class="pilotBG">
+        <input type="text" placeholder="คำอธิบายระบบขับเคลื่อน" v-model="User.mechPropDesc">
+        <input type="text" placeholder="0" v-model="User.mechPropCost" @keypress.enter="addBG()">
+      </div>
+
+      <h2>อุปกรณ์ส่วนเสริม</h2>
+      <div class="item" v-for="item in User.mechAug.split(',').slice(0, -1)">
+        <p class="title">
+          <i class="fa-duotone fa-solid fa-xmark" @click="removeItem(item)"></i>
+          {{ getItem(item).name }} [{{ getItem(item).cost }}] -
+          <span class="icons">
+            [{{ getItem(item).category }}]
+          </span>
+        </p>
+        <div class="desc">
+          <ul>
+            <li v-for="i in getItem(item).DETAIL.split(',')"> -
+              {{ i }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <input type="text" placeholder="ค้นหาอุปกรณ์ส่วนเสริม" v-model="searchTextAug">
+      <ul class="equipment">
+        <li v-for="item in Augmented">
+          {{ item.name }} [{{ item.cost }}]
+          <i class="fa-solid fa-plus" @click="User.mechAug += `${item.ID},`"></i>
+        </li>
+      </ul>
 
       <h2>ยุทโธปกรณ์</h2>
       <div class="item" v-for="item in User.mechWE.split(',').slice(0, -1)">
@@ -80,7 +111,7 @@
           </ul>
         </div>
       </div>
-      <input type="text" placeholder="ค้นหายุทโธปกรณ์" v-model="searchText">
+      <input type="text" placeholder="ค้นหายุทโธปกรณ์" v-model="searchTextWE">
       <ul class="equipment">
         <li v-for="item in Equipment">
           {{ item.name }} [{{ item.cost }}]
@@ -113,12 +144,16 @@ const isLoad = ref(false)
 
 const WnE = ref([])
 
-const searchText = ref('')
+const searchTextAug = ref('')
+const searchTextWE = ref('')
+
 const Body = computed(() => WnE.value.filter(item => item.type == 'Augmented Parts [Body]'))
-const Equipment = computed(() => WnE.value.filter(item => item.type != 'Augmented Parts [Body]').filter(item => item.name.startsWith(searchText.value)).slice(0, 5))
+
+const Augmented = computed(() => WnE.value.filter(item => item.type.startsWith('Augmented Parts')).filter(item => item.name.startsWith(searchTextAug.value)).slice(0, 5))
+const Equipment = computed(() => WnE.value.filter(item => !item.type.startsWith('Augmented Parts')).filter(item => item.name.startsWith(searchTextWE.value)).slice(0, 5))
 
 const getItem = (id) => WnE.value.filter(item => item.ID == id)[0]
-const removeItem = (id) => { User.value.mechWE = User.value.mechWE.replace(id + ',', ''); }
+const removeItem = (id) => { User.value.mechWE = User.value.mechWE.replace(id + ',', ''); User.value.mechAug = User.value.mechAug.replace(id + ',', ''); }
 
 const User = ref({
   username: "",
@@ -131,8 +166,11 @@ const User = ref({
   pilotBG: [],
   mechName: "",
   mechImage: "",
-  mechBody: "",
-  mechProp: "",
+  mechBodyDesc: "",
+  mechBodyCost: "",
+  mechPropDesc: "",
+  mechPropCost: "",
+  mechAug: "",
   mechWE: "",
   status: ""
 })
