@@ -1,21 +1,19 @@
 <template>
   <div>
-    <div>
-      <h1>PILOT ROSTER</h1>
-      <div class="users">
-        <RouterLink v-for="user in Users" :to="'users/' + user.username">
-          <div class="user">
-            <div class="userProfile">
-              <img :src="user.pilotImage" alt="">
-            </div>
-            <div class="userDetails">
-              <h3 class="pilotName">{{ user.pilotName }}</h3>
-              <p>> [ <strong>{{ user.mechName }}</strong> ]</p>
-              <p>> STATUS: [ <strong class="status" :class="user.status">{{ status[user.status] }}</strong> ]</p>
-            </div>
+    <h1>PILOT ROSTER</h1>
+    <div class="users">
+      <RouterLink v-for="user in Users" :to="'users/' + user.username">
+        <div class="user">
+          <div class="userProfile">
+            <img :src="user.pilotImage" alt="">
           </div>
-        </RouterLink>
-      </div>
+          <div class="userDetails">
+            <h3 class="pilotName">{{ user.pilotName }}</h3>
+            <p>> [ <strong>{{ user.mechName }}</strong> ]</p>
+            <p>> STATUS: [ <strong class="status" :class="user.status">{{ status[user.status] }}</strong> ]</p>
+          </div>
+        </div>
+      </RouterLink>
     </div>
   </div>
 </template>
