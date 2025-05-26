@@ -7,13 +7,15 @@ import PilotView from './views/PilotView.vue'
 import MechView from './views/MechView.vue'
 import AdminView from './views/AdminView.vue'
 import RegisterView from './views/RegisterView.vue'
+import CampaignView from './views/CampaignView.vue'
 
 const routes = [
-  { path: '/', component: AdminView },
+  { path: '/', component: CampaignView },
   { path: '/register', component: RegisterView },
   { path: '/users/:username', component: PilotView },
   { path: '/users/:username/mech', component: MechView },
   { path: '/roster', component: AdminView },
+  { path: '/campaign', component: CampaignView },
 ]
 
 const router = createRouter({
