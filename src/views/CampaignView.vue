@@ -3,9 +3,9 @@
         <h1>Campaigns</h1>
         <ul>
             <li v-for="cp in Campaigns">
-                <img :src="cp.image" alt="">
+                <img :src="cp.ImageLink" alt="">
                 <h4>
-                    {{ cp.title }}
+                    {{ cp.Title }}
                 </h4>
                 <div class="actions">
                     <RouterLink to="/roster">
@@ -22,20 +22,29 @@
 </template>
 
 <script setup>
-const Campaigns = [
-    {
-        title: "Operation: Iron Nova",
-        image: "https://i.ytimg.com/vi/LqtXiDxohtE/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAd8Ur9PIG-ex-nKcLQZextB2UynA"
-    },
-    {
-        title: "Zeon’s Last Ember",
-        image: "https://vignette.wikia.nocookie.net/gundam/images/e/e7/GPF_Operation_Odessa.jpg/revision/latest?cb=20190729143112"
-    },
-    {
-        title: "Crimson Stardust Protocol",
-        image: "https://media.mmorpg.com/images/heroes/news/43897.jpg"
+import axios  from "axios";
+const Campaigns = ref([])
+
+import { onMounted, ref } from 'vue';
+
+onMounted(() => {
+      const options = {
+    method: 'GET',
+  url: 'https://ndb.3xbun.com/api/v2/tables/mzyn92ajxgok59i/records',
+    params: { offset: '0', limit: '999', where: '', viewId: 'vwr3n7yv72omjgph' },
+    headers: {
+      'xc-token': 'HZvUQ_SAWh6C0BRpd36SNhTSzLGizMgCxJShzghS'
     }
-]
+  };
+
+  axios.request(options).then(function (res) {
+    console.log(res.data);
+
+    Campaigns.value = res.data.list;
+  }).catch(function (error) {
+    console.error(error);
+  });
+})
 </script>
 
 <style scoped>
