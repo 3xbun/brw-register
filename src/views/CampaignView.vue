@@ -59,11 +59,13 @@ li {
     height: 25vh;
     border: 1px solid var(--primary-base-bg);
     text-align: center;
-    position: relative;
+    overflow: hidden;
 }
 
 img {
-    width: 100%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    height: 15vh;
 }
 
 .actions {
