@@ -107,6 +107,11 @@ const equip = (id) => {
   }
 }
 
+const unequip = id => {
+  User.value.mechAug = User.value.mechAug.filter(item => item !== Number(id))
+  User.value.mechWe = User.value.mechWe.filter(item => item !== Number(id))
+}
+
 onMounted(() => {
   const options = {
     method: 'GET',
@@ -211,5 +216,10 @@ hr {
   width: max-content;
   text-align: center;
   margin: 1em auto;
+  cursor: pointer;
+}
+
+.equippedBtn {
+  background-color: var(--primary-base-bg);
 }
 </style>
