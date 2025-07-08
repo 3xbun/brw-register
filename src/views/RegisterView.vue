@@ -82,7 +82,7 @@
 
         <div class="mechWe">
           <h2>ยุทโธปกรณ์</h2>
-          <div class="item" v-for="i in User.mechWe" v-if="User.mechAug.length > 0">
+          <div class="item" v-for="i in User.mechWe" v-if="User.mechWe.length > 0">
             - {{WnE.find(item => item.Id === i).Name}}
           </div>
           <div class="item" v-else>
@@ -379,6 +379,10 @@ i {
   /* border: 1px solid var(--primary-base-bg);
   padding: 1em;
   border-radius: .5em; */
+}
+
+.item p {
+  color: gray;
 }
 
 .title {
