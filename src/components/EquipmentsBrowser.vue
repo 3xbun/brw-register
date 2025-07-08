@@ -107,7 +107,7 @@ onMounted(() => {
   const options = {
     method: 'GET',
     url: 'https://ndb.3xbun.com/api/v2/tables/ms3smpad87j9249/records',
-    params: { offset: '0', limit: '999', where: '', viewId: 'vwx7f9e6hsdh33dt' },
+    params: { offset: '0', limit: '999', where: '', viewId: 'vwc4q14hzqmxkbxb' },
     headers: {
       'xc-token': 'HZvUQ_SAWh6C0BRpd36SNhTSzLGizMgCxJShzghS'
     }
