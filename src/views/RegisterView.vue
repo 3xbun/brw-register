@@ -76,7 +76,11 @@
         <div class="mechAug">
           <h2>อุปกรณ์ส่วนเสริม</h2>
           <div class="item" v-for="i in User.mechAug" v-if="User.mechAug.length > 0">
-            - {{WnE.find(item => item.Id === i).Name}} <i class="fa-duotone fa-solid fa-xmark" @click="unequip(i)"></i>
+            <span @click="selectedItem = i; showItem = true">
+              - <i class="fa-duotone fa-solid fa-list-tree"></i>
+              {{WnE.find(item => item.Id === i).Name}}
+            </span>
+            <i class="fa-duotone fa-solid fa-xmark" @click="unequip(i)"></i>
           </div>
           <div class="item" v-else>
             <p>ไม่มีอุปกรณ์ส่วนเสริม</p>
@@ -86,13 +90,19 @@
         <div class="mechWe">
           <h2>ยุทโธปกรณ์</h2>
           <div class="item" v-for="i in User.mechWe" v-if="User.mechWe.length > 0">
-            - {{WnE.find(item => item.Id === i).Name}} <i class="fa-duotone fa-solid fa-xmark" @click="unequip(i)"></i>
+            <span @click="selectedItem = i; showItem = true">
+              - <i class="fa-duotone fa-solid fa-list-tree"></i>
+              {{WnE.find(item => item.Id === i).Name}}
+            </span>
+            <i class="fa-duotone fa-solid fa-xmark" @click="unequip(i)"></i>
           </div>
           <div class="item" v-else>
             <p>ไม่มียุทโธปกรณ์</p>
           </div>
         </div>
       </div>
+
+      <ItemViewer v-if="showItem && selectedItem" :item="WnE.find(item => item.Id === selectedItem)" />
 
       <p class="btn" @click="showBrowser = true">เพิ่ม</p>
       <EquipmentsBrowser v-if="showBrowser" />
@@ -118,11 +128,15 @@ import axios from 'axios';
 
 import Loading from '../components/Loading.vue';
 import EquipmentsBrowser from '../components/EquipmentsBrowser.vue';
+import ItemViewer from '../components/ItemViewer.vue';
+
+const selectedItem = ref('')
 
 const isLoad = ref(false)
 
 const WnE = ref([])
 const showBrowser = ref(false)
+const showItem = ref(false)
 
 const previewImgPilot = ref(null)
 const imageFilePilot = ref(null)
@@ -150,6 +164,7 @@ const User = ref({
   status: ""
 })
 
+provide('showItem', showItem)
 provide('showBrowser', showBrowser)
 provide('User', User)
 

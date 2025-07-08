@@ -60,7 +60,6 @@
 
       <h3>รายละเอียด</h3>
       <ul>
-
         <li v-for="item in WnE.find(item => item.Id === selectedEquipment).Details.split(',')">
           - {{ item }}
         </li>
@@ -198,6 +197,7 @@ hr {
 }
 
 .stats {
+  margin: 1em;
   display: flex;
   gap: 2em;
   justify-content: center;
