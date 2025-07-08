@@ -1,7 +1,7 @@
 <template>
   <div class="browser">
     <header>
-      <h1>ส่วนใส่อุปกรณ์</h1>
+      <h1>สวมใส่อุปกรณ์</h1>
       <i class="fa-duotone fa-solid fa-xmark" @click="showBrowser = false"></i>
     </header>
     <input type="text" placeholder="ค้นหาอุปกรณ์" v-model="searchText">
@@ -73,9 +73,8 @@
 
       <div class="equippedBtn btn" @click="unequip(selectedEquipment)"
         v-if="User.mechWe.includes(selectedEquipment) || User.mechAug.includes(selectedEquipment)">
-        สวมใส่
+        ถอด
         {{WnE.find(item => item.Id === selectedEquipment).Name}}
-        แล้ว
       </div>
       <div class="equipBtn btn" @click="equip(selectedEquipment)" v-else>
         สวมใส่
@@ -220,6 +219,7 @@ hr {
 }
 
 .equippedBtn {
-  background-color: var(--primary-base-bg);
+  border: 1px solid #ff0808;
+  color: #ff0808;
 }
 </style>

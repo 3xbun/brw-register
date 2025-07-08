@@ -73,7 +73,7 @@
         <div class="mechAug">
           <h2>อุปกรณ์ส่วนเสริม</h2>
           <div class="item" v-for="i in User.mechAug" v-if="User.mechAug.length > 0">
-            - {{WnE.find(item => item.Id === i).Name}}
+            - {{WnE.find(item => item.Id === i).Name}} <i class="fa-duotone fa-solid fa-xmark" @click="unequip(i)"></i>
           </div>
           <div class="item" v-else>
             <p>ไม่มีอุปกรณ์ส่วนเสริม</p>
@@ -83,7 +83,7 @@
         <div class="mechWe">
           <h2>ยุทโธปกรณ์</h2>
           <div class="item" v-for="i in User.mechWe" v-if="User.mechWe.length > 0">
-            - {{WnE.find(item => item.Id === i).Name}}
+            - {{WnE.find(item => item.Id === i).Name}} <i class="fa-duotone fa-solid fa-xmark" @click="unequip(i)"></i>
           </div>
           <div class="item" v-else>
             <p>ไม่มียุทโธปกรณ์</p>
@@ -374,6 +374,9 @@ i {
 }
 
 .item {
+  display: flex;
+  align-items: center;
+  gap: .5em;
   margin-top: 1em;
   margin-left: 1em;
   /* border: 1px solid var(--primary-base-bg);
