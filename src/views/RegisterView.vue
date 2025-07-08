@@ -9,7 +9,7 @@
       <input type="text" placeholder="ลิงก์รูปภาพพลขับ" v-model="User.pilotImage">
       <div class="pilotImage">
         <img v-if="User.pilotImage" :src="User.pilotImage">
-        <img v-else src="https://banffventureforum.com/wp-content/uploads/2019/08/no-photo-icon-22.png">
+        <img v-else src="https://compcon.app/static/img/pilot/nodata.png">
       </div>
 
       <h2>STATS</h2>
@@ -54,7 +54,7 @@
       <input type="text" placeholder="ลิงก์รูปภาพหุ่นยนต์" v-model="User.mechImage">
       <div class="pilotImage">
         <img v-if="User.mechImage" :src="User.mechImage">
-        <img v-else src="https://banffventureforum.com/wp-content/uploads/2019/08/no-photo-icon-22.png">
+        <img v-else src="https://d2c79xe1p61csc.cloudfront.net/frames/mf_standard_pattern_i_everest.png">
       </div>
 
       <h2>ตัวหุ่น</h2>
@@ -69,55 +69,30 @@
         <input type="text" placeholder="0" v-model="User.mechPropCost" @keypress.enter="addBG()">
       </div>
 
-      <h2>อุปกรณ์ส่วนเสริม</h2>
-      <div class="item" v-for="item in User.mechAug.split(',').slice(0, -1)">
-        <p class="title">
-          <i class="fa-duotone fa-solid fa-xmark" @click="removeItem(item)"></i>
-          {{ getItem(item).name }} [{{ getItem(item).cost }}] -
-          <span class="icons">
-            [{{ getItem(item).category }}]
-          </span>
-        </p>
-        <div class="desc">
-          <ul>
-            <li v-for="i in getItem(item).DETAIL.split(',')"> -
-              {{ i }}
-            </li>
-          </ul>
+      <div class="equipments">
+        <div class="mechAug">
+          <h2>อุปกรณ์ส่วนเสริม</h2>
+          <div class="item" v-for="i in User.mechAug" v-if="User.mechAug.length > 0">
+            - {{WnE.find(item => item.Id === i).Name}}
+          </div>
+          <div class="item" v-else>
+            <p>ไม่มีอุปกรณ์ส่วนเสริม</p>
+          </div>
         </div>
-      </div>
-      <input type="text" placeholder="ค้นหาอุปกรณ์ส่วนเสริม" v-model="searchTextAug">
-      <ul class="equipment">
-        <li v-for="item in Augmented">
-          {{ item.name }} [{{ item.cost }}]
-          <i class="fa-solid fa-plus" @click="User.mechAug += `${item.ID},`"></i>
-        </li>
-      </ul>
 
-      <h2>ยุทโธปกรณ์</h2>
-      <div class="item" v-for="item in User.mechWE.split(',').slice(0, -1)">
-        <p class="title">
-          <i class="fa-duotone fa-solid fa-xmark" @click="removeItem(item)"></i>
-          {{ getItem(item).name }} [{{ getItem(item).cost }}] -
-          <span class="icons">
-            [{{ getItem(item).category }}]
-          </span>
-        </p>
-        <div class="desc">
-          <ul>
-            <li v-for="i in getItem(item).DETAIL.split(',')"> -
-              {{ i }}
-            </li>
-          </ul>
+        <div class="mechWe">
+          <h2>ยุทโธปกรณ์</h2>
+          <div class="item" v-for="i in User.mechWe" v-if="User.mechAug.length > 0">
+            - {{WnE.find(item => item.Id === i).Name}}
+          </div>
+          <div class="item" v-else>
+            <p>ไม่มียุทโธปกรณ์</p>
+          </div>
         </div>
       </div>
-      <input type="text" placeholder="ค้นหายุทโธปกรณ์" v-model="searchTextWE">
-      <ul class="equipment">
-        <li v-for="item in Equipment">
-          {{ item.name }} [{{ item.cost }}]
-          <i class="fa-solid fa-plus" @click="User.mechWE += `${item.ID},`"></i>
-        </li>
-      </ul>
+
+      <p class="btn" @click="showBrowser = true">เพิ่ม</p>
+      <EquipmentsBrowser v-if="showBrowser" />
 
       <div class="regisBtn">
         <Loading class="loading" v-if="isLoad" />
@@ -135,25 +110,16 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, provide, ref } from 'vue';
 import axios from 'axios';
 
 import Loading from '../components/Loading.vue';
+import EquipmentsBrowser from '../components/EquipmentsBrowser.vue';
 
 const isLoad = ref(false)
 
 const WnE = ref([])
-
-const searchTextAug = ref('')
-const searchTextWE = ref('')
-
-const Body = computed(() => WnE.value.filter(item => item.type == 'Augmented Parts [Body]'))
-
-const Augmented = computed(() => WnE.value.filter(item => item.type.startsWith('Augmented Parts')).filter(item => item.name.startsWith(searchTextAug.value)).slice(0, 5))
-const Equipment = computed(() => WnE.value.filter(item => !item.type.startsWith('Augmented Parts')).filter(item => item.name.startsWith(searchTextWE.value)).slice(0, 5))
-
-const getItem = (id) => WnE.value.filter(item => item.ID == id)[0]
-const removeItem = (id) => { User.value.mechWE = User.value.mechWE.replace(id + ',', ''); User.value.mechAug = User.value.mechAug.replace(id + ',', ''); }
+const showBrowser = ref(false)
 
 const User = ref({
   username: "",
@@ -170,10 +136,13 @@ const User = ref({
   mechBodyCost: "",
   mechPropDesc: "",
   mechPropCost: "",
-  mechAug: "",
-  mechWE: "",
+  mechAug: [],
+  mechWe: [],
   status: ""
 })
+
+provide('showBrowser', showBrowser)
+provide('User', User)
 
 const result = ref("")
 
@@ -207,9 +176,19 @@ const register = () => {
 }
 
 onMounted(() => {
-  axios.get("https://n8n.3xbun.com/webhook/brw-api/wne").then(res => {
-    WnE.value = res.data
-  })
+  const options = {
+    method: 'GET',
+    url: 'https://ndb.3xbun.com/api/v2/tables/ms3smpad87j9249/records',
+    params: { offset: '0', limit: '999', where: '', viewId: 'vwx7f9e6hsdh33dt' },
+    headers: {
+      'xc-token': 'HZvUQ_SAWh6C0BRpd36SNhTSzLGizMgCxJShzghS'
+    }
+  };
+
+  axios
+    .request(options)
+    .then(res => WnE.value = res.data.list)
+    .catch(err => console.error(err));
 })
 </script>
 
@@ -397,9 +376,9 @@ i {
 .item {
   margin-top: 1em;
   margin-left: 1em;
-  border: 1px solid var(--primary-base-bg);
+  /* border: 1px solid var(--primary-base-bg);
   padding: 1em;
-  border-radius: .5em;
+  border-radius: .5em; */
 }
 
 .title {
@@ -411,5 +390,14 @@ i {
   color: var(--secondary-base-bg);
   display: inline-flex;
   gap: .2em;
+}
+
+.equipments {
+  display: flex;
+}
+
+.equipments div {
+  width: 100%;
+
 }
 </style>
