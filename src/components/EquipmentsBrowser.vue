@@ -229,4 +229,8 @@ hr {
   border: 1px solid #ff0808;
   color: #ff0808;
 }
+
+.link {
+  cursor: pointer;
+}
 </style>

@@ -53,6 +53,16 @@
         - {{ item }}
       </li>
     </ul>
+
+
+    <div v-if="props.item.Link != null" class="link">
+      <ul>
+        <li v-for="link in props.item.Link.split(',')" @click="selectedEquipment = Number(link)">
+          <i class="fa-duotone fa-regular fa-up-right-and-down-left-from-center"></i> {{WnE.find(item => item.Id ===
+            Number(link)).Name}}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -64,6 +74,8 @@ const props = defineProps({
 })
 
 const showItem = inject('showItem')
+const WnE = inject('WnE')
+const selectedEquipment = inject('selectedEquipment')
 </script>
 
 <style scoped>
@@ -122,5 +134,9 @@ header i {
   background-color: var(--primary-base-bg);
   padding: .25em .5em;
   border-radius: .5em;
+}
+
+.link {
+  cursor: pointer;
 }
 </style>

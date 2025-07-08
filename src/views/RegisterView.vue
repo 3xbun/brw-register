@@ -167,7 +167,8 @@ const User = ref({
 provide('showItem', showItem)
 provide('showBrowser', showBrowser)
 provide('User', User)
-
+provide('WnE', WnE)
+provide('selectedEquipment', selectedItem)
 const result = ref("")
 
 const pilotBG = ref({
