@@ -99,8 +99,6 @@ const User = inject('User')
 
 const equip = (id) => {
   const item = WnE.value.filter(item => item.Id === Number(id))[0]
-  console.log(item.Type);
-  console.log(User.value.mechAug);
 
   if (item.Type.startsWith("Augmented Parts")) {
     User.value.mechAug.push(item.Id)
