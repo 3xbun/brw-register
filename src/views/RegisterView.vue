@@ -7,8 +7,10 @@
       <input type="text" placeholder="ชื่อผู้ใช้" v-model="User.username">
       <input type="text" placeholder="ชื่อพลขับ" v-model="User.pilotName">
       <input type="text" placeholder="ลิงก์รูปภาพพลขับ" v-model="User.pilotImage">
+
+      <input type="file" id="media" accept="image/*" @change="previewImage($event, 'pilot')">
       <div class="pilotImage">
-        <img v-if="User.pilotImage" :src="User.pilotImage">
+        <img v-if="previewImgPilot" :src="previewImgPilot" :alt="User.username + '-PilotImage'">
         <img v-else src="https://compcon.app/static/img/pilot/nodata.png">
       </div>
 
@@ -52,8 +54,10 @@
       <h2>หุ่น</h2>
       <input type="text" placeholder="ชื่อหุ่น" v-model="User.mechName">
       <input type="text" placeholder="ลิงก์รูปภาพหุ่นยนต์" v-model="User.mechImage">
+
+      <input type="file" id="media" accept="image/*" @change="previewImage($event, 'mech')">
       <div class="pilotImage">
-        <img v-if="User.mechImage" :src="User.mechImage">
+        <img v-if="previewImgMech" :src="previewImgMech" :alt="User.username + '-MechImage'">
         <img v-else src="https://d2c79xe1p61csc.cloudfront.net/frames/mf_standard_pattern_i_everest.png">
       </div>
 
@@ -121,6 +125,12 @@ const isLoad = ref(false)
 const WnE = ref([])
 const showBrowser = ref(false)
 
+const previewImgPilot = ref(null)
+const imageFilePilot = ref(null)
+
+const previewImgMech = ref(null)
+const imageFileMech = ref(null)
+
 const User = ref({
   username: "",
   pilotName: "",
@@ -166,6 +176,31 @@ const addBG = () => {
     name: "",
     cost: ""
   }
+}
+
+const previewImage = (e, mode) => {
+  const input = e.target;
+  if (input.files) {
+    var reader = new FileReader();
+    if (mode == 'pilot') {
+      reader.onload = (e) => {
+        previewImgPilot.value = e.target.result;
+      }
+      imageFilePilot.value = input.files[0];
+    } else if (mode == 'mech') {
+      reader.onload = (e) => {
+        previewImgMech.value = e.target.result;
+      }
+      imageFileMech.value = input.files[0];
+    }
+
+    reader.readAsDataURL(input.files[0]);
+  }
+};
+
+const unequip = id => {
+  User.value.mechAug = User.value.mechAug.filter(item => item !== Number(id))
+  User.value.mechWe = User.value.mechWe.filter(item => item !== Number(id))
 }
 
 const register = () => {
