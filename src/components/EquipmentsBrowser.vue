@@ -76,14 +76,16 @@
         </ul>
       </div>
 
-      <div class="equippedBtn btn" @click="unequip(selectedEquipment)"
-        v-if="User.mechWe.includes(selectedEquipment) || User.mechAug.includes(selectedEquipment)">
-        ถอด
-        {{WnE.find(item => item.Id === selectedEquipment).Name}}
-      </div>
-      <div class="equipBtn btn" @click="equip(selectedEquipment)" v-else>
-        สวมใส่
-        {{WnE.find(item => item.Id === selectedEquipment).Name}}
+      <div class="isEquippable" v-if="WnE.find(item => item.Id === selectedEquipment).Equippable == 'TRUE'">
+        <div class="equippedBtn btn" @click="unequip(selectedEquipment)"
+          v-if="User.mechWe.includes(selectedEquipment) || User.mechAug.includes(selectedEquipment)">
+          ถอด
+          {{WnE.find(item => item.Id === selectedEquipment).Name}}
+        </div>
+        <div class="equipBtn btn" @click="equip(selectedEquipment)" v-else>
+          สวมใส่
+          {{WnE.find(item => item.Id === selectedEquipment).Name}}
+        </div>
       </div>
     </div>
   </div>
