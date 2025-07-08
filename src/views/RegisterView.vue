@@ -61,13 +61,12 @@
         <img v-else src="https://d2c79xe1p61csc.cloudfront.net/frames/mf_standard_pattern_i_everest.png">
       </div>
 
-      <h2>ตัวหุ่น</h2>
       <div class="pilotBG">
-        <input type="text" placeholder="คำอธิบายตัวหุ่น" v-model="User.mechBodyDesc">
+        <h2>Body</h2>
         <input type="text" placeholder="0" v-model="User.mechBodyCost" @keypress.enter="addBG()">
       </div>
 
-      <h2>ระบบขับเคลื่อน</h2>
+      <h2>Propulsion</h2>
       <div class="pilotBG">
         <input type="text" placeholder="คำอธิบายระบบขับเคลื่อน" v-model="User.mechPropDesc">
         <input type="text" placeholder="0" v-model="User.mechPropCost" @keypress.enter="addBG()">
