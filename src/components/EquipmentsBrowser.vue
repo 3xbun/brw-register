@@ -123,10 +123,13 @@ onMounted(() => {
 <style scoped>
 .browser {
   position: fixed;
+  max-width: 600px;
+  width: 85vw;
+  left: 0;
+  right: 0;
+  margin: auto;
   top: 5em;
   bottom: 0;
-  left: 1em;
-  right: 1em;
   padding: 1em;
   border-radius: .5em;
   overflow: scroll;
