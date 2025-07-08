@@ -71,7 +71,13 @@
         </ul>
       </div>
 
-      <div class="equipBtn btn" @click="equip(selectedEquipment)">
+      <div class="equippedBtn btn" @click="unequip(selectedEquipment)"
+        v-if="User.mechWe.includes(selectedEquipment) || User.mechAug.includes(selectedEquipment)">
+        สวมใส่
+        {{WnE.find(item => item.Id === selectedEquipment).Name}}
+        แล้ว
+      </div>
+      <div class="equipBtn btn" @click="equip(selectedEquipment)" v-else>
         สวมใส่
         {{WnE.find(item => item.Id === selectedEquipment).Name}}
       </div>
