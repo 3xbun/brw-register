@@ -437,6 +437,10 @@ i {
   color: gray;
 }
 
+.item span {
+  cursor: pointer;
+}
+
 .title {
   color: var(--primary-base-bg);
   font-weight: bold;
