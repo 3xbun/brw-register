@@ -1,7 +1,7 @@
 {
   "name": "brw-dashboard",
   "private": true,
-  "version": "2.2.1-alpha",
+  "version": "2.3.0-alpha",
   "type": "module",
   "scripts": {
     "dev": "vite",
