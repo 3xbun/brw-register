@@ -59,7 +59,12 @@
       </div>
 
       <h3>รายละเอียด</h3>
-      <p>{{WnE.find(item => item.Id === selectedEquipment).Details}}</p>
+      <ul>
+
+        <li v-for="item in WnE.find(item => item.Id === selectedEquipment).Details.split(',')">
+          - {{ item }}
+        </li>
+      </ul>
 
       <div v-if="WnE.find(item => item.Id === selectedEquipment).Link != null" class="link">
         <ul>
