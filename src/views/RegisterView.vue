@@ -119,6 +119,8 @@
       {{ result }}
     </div>
     </p>
+
+    <TotalCost :cost="cost" />
   </div>
 </template>
 
@@ -129,6 +131,7 @@ import axios from 'axios';
 import Loading from '../components/Loading.vue';
 import EquipmentsBrowser from '../components/EquipmentsBrowser.vue';
 import ItemViewer from '../components/ItemViewer.vue';
+import TotalCost from "../components/TotalCost.vue";
 
 const selectedItem = ref('')
 
@@ -224,6 +227,23 @@ const register = () => {
   payload.pilotBG = JSON.stringify(payload.pilotBG)
   axios.post("https://n8n.3xbun.com/webhook/brw-api/register", payload).then(res => { result.value = res.status; isLoad.value = false }).catch(err => { result.value = err; isLoad.value = false })
 }
+
+const cost = computed(() => {
+  let total = 0
+
+  total += Number(User.value.mechBodyCost)
+  total += Number(User.value.mechPropCost)
+
+  User.value.mechAug.forEach(i => {
+    total += WnE.value.find(item => item.Id === i).Cost
+  });
+
+  User.value.mechWe.forEach(i => {
+    total += WnE.value.find(item => item.Id === i).Cost
+  });
+
+  return total
+})
 
 onMounted(() => {
   const options = {
