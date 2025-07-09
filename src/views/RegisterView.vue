@@ -231,9 +231,6 @@ const register = () => {
 const cost = computed(() => {
   let total = 0
 
-  total += Number(User.value.mechBodyCost)
-  total += Number(User.value.mechPropCost)
-
   User.value.mechAug.forEach(i => {
     total += WnE.value.find(item => item.Id === i).Cost
   });
