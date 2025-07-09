@@ -120,7 +120,7 @@
     </div>
     </p>
 
-    <TotalCost :cost="cost" />
+    <TotalCost :cost="cost" :maxCost="Number(User.mechBodyCost) + Number(User.mechPropCost)" />
   </div>
 </template>
 
