@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <Loading v-if="Users.length < 1" />
-    <RouterView v-else />
+    <!-- <Loading v-if="Users.length < 1" /> -->
+    <RouterView />
   </div>
   <Footer />
 </template>
@@ -13,29 +13,57 @@ import { onMounted, provide, ref } from 'vue';
 import Loading from './components/Loading.vue';
 
 const Users = ref([])
-const Equipments = ref([])
+const WnE = ref([])
+const Campaigns = ref([])
 
 provide('Users', Users)
-provide('Equipments', Equipments)
+provide('WnE', WnE)
+provide('Campaigns', Campaigns)
+
+const getCampaign = () => {
+  const options = {
+    method: 'GET',
+    url: 'https://ndb.3xbun.com/api/v2/tables/mixqd2vuup0u34e/records',
+    params: { offset: '0', limit: '25', where: '', viewId: 'vwitihmuxeam4xhe' },
+    headers: {
+      'xc-token': 'G85Gjz-nXv6tsl2Y_7se6dAgeTVOjlyinz1cQKOU'
+    }
+  };
+
+  axios
+    .request(options)
+    .then(res => Campaigns.value = res.data.list)
+    .catch(err => console.error(err));
+}
+
+const getWnE = () => {
+  const options = {
+    method: 'GET',
+    url: 'https://ndb.3xbun.com/api/v2/tables/mzps7862w38hz1j/records',
+    params: { offset: '0', limit: '999', where: '', viewId: 'vwta9c9j6hl1yzur' },
+    headers: {
+      'xc-token': 'G85Gjz-nXv6tsl2Y_7se6dAgeTVOjlyinz1cQKOU'
+    }
+  };
+
+  axios
+    .request(options)
+    .then(res => WnE.value = res.data.list)
+    .catch(err => console.error(err));
+}
 
 onMounted(() => {
   if (localStorage.getItem("UsersDB")) {
     Users.value = JSON.parse(localStorage.getItem("UsersDB"))
   }
 
-  if (localStorage.getItem("Equipments")) {
-    Equipments.value = JSON.parse(localStorage.getItem("Equipments"))
+  if (localStorage.getItem("WnE")) {
+    WnE.value = JSON.parse(localStorage.getItem("WnE"))
   }
 
-  axios.get("https://n8n.3xbun.com/webhook/brw-api/users").then(res => {
-    Users.value = res.data
-    localStorage.setItem("UsersDB", JSON.stringify(res.data))
-  })
 
-  axios.get("https://n8n.3xbun.com/webhook/brw-api/wne").then(res => {
-    Equipments.value = res.data
-    localStorage.setItem("Equipments", JSON.stringify(res.data))
-  })
+  getWnE()
+  getCampaign()
 })
 </script>
 

@@ -91,10 +91,9 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, ref } from 'vue';
-import axios from 'axios';
+import { computed, inject, ref } from 'vue';
 
-const WnE = ref([]);
+const WnE = inject('WnE')
 const searchText = ref('');
 const WnEFilterd = computed(() => WnE.value.filter(item => item.Name.startsWith(searchText.value)))
 
@@ -116,22 +115,6 @@ const unequip = id => {
   User.value.mechAug = User.value.mechAug.filter(item => item !== Number(id))
   User.value.mechWe = User.value.mechWe.filter(item => item !== Number(id))
 }
-
-onMounted(() => {
-  const options = {
-    method: 'GET',
-    url: 'https://ndb.3xbun.com/api/v2/tables/ms3smpad87j9249/records',
-    params: { offset: '0', limit: '999', where: '', viewId: 'vwc4q14hzqmxkbxb' },
-    headers: {
-      'xc-token': 'HZvUQ_SAWh6C0BRpd36SNhTSzLGizMgCxJShzghS'
-    }
-  };
-
-  axios
-    .request(options)
-    .then(res => WnE.value = res.data.list)
-    .catch(err => console.error(err));
-})
 </script>
 
 <style scoped>

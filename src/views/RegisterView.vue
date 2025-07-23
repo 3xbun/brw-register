@@ -125,7 +125,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, provide, ref } from 'vue';
+import { computed, inject, onMounted, provide, ref } from 'vue';
 import axios from 'axios';
 
 import Loading from '../components/Loading.vue';
@@ -137,7 +137,7 @@ const selectedItem = ref('')
 
 const isLoad = ref(false)
 
-const WnE = ref([])
+const WnE = inject('WnE')
 const showBrowser = ref(false)
 const showItem = ref(false)
 
@@ -172,6 +172,7 @@ provide('showBrowser', showBrowser)
 provide('User', User)
 provide('WnE', WnE)
 provide('selectedEquipment', selectedItem)
+
 const result = ref("")
 
 const pilotBG = ref({
@@ -240,22 +241,6 @@ const cost = computed(() => {
   });
 
   return total
-})
-
-onMounted(() => {
-  const options = {
-    method: 'GET',
-    url: 'https://ndb.3xbun.com/api/v2/tables/ms3smpad87j9249/records',
-    params: { offset: '0', limit: '999', where: '', viewId: 'vwx7f9e6hsdh33dt' },
-    headers: {
-      'xc-token': 'HZvUQ_SAWh6C0BRpd36SNhTSzLGizMgCxJShzghS'
-    }
-  };
-
-  axios
-    .request(options)
-    .then(res => WnE.value = res.data.list)
-    .catch(err => console.error(err));
 })
 </script>
 
