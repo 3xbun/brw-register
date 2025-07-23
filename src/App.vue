@@ -48,19 +48,21 @@ const getWnE = () => {
 
   axios
     .request(options)
-    .then(res => WnE.value = res.data.list)
+    .then(res => {
+      WnE.value = res.data.list;
+      localStorage.setItem('WnE', JSON.stringify(WnE.value))
+    })
     .catch(err => console.error(err));
 }
 
 onMounted(() => {
-  if (localStorage.getItem("UsersDB")) {
-    Users.value = JSON.parse(localStorage.getItem("UsersDB"))
+  if (localStorage.getItem("Users")) {
+    Users.value = JSON.parse(localStorage.getItem("Users"))
   }
 
   if (localStorage.getItem("WnE")) {
     WnE.value = JSON.parse(localStorage.getItem("WnE"))
   }
-
 
   getWnE()
   getCampaign()
